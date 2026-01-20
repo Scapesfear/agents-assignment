@@ -107,10 +107,9 @@ cd agents-assignment
 2. **Install Base Dependencies**
 First, install the standard requirements.
 ```bash
-pip install -r requirements.txt
+pip install -r examples/voice_agents/requirements.txt
 
 ```
-
 
 3. **⚠️ IMPORTANT: Link Local Library**
 To use the modified interruption logic, you **MUST** link your local version in editable mode.
@@ -141,7 +140,16 @@ CARTESIA_API_KEY=
 ```
 
 
-6. **Run the Agent**
+6. **Download Models for your agent**
+
+To download the models locally, run the following command:
+
+```bash
+python examples/voice_agents/basic_agent.py download-files
+```
+
+
+7. **Run the Agent**
 ```bash
 python examples/voice_agents/basic_agent.py console
 
