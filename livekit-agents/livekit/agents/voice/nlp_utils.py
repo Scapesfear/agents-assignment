@@ -14,19 +14,16 @@ def is_backchannel(transcript: str, ignore_list: list[str]) -> bool:
     if not transcript or not ignore_list:
         return False
 
-    # 1. Normalize: "Yeah... I see!" -> "yeah i see"
-    # Replace punctuation with space to avoid merging words ("yeah.but" -> "yeah but")
+    # Normalization Transcript
     translator = str.maketrans(string.punctuation, ' ' * len(string.punctuation))
     clean_text = transcript.lower().translate(translator)
     
-    # Split into a list of words for robust matching
     words = clean_text.split()
     
     if not words:
         return False
 
-    # 2. Prepare Ignore Phrases (also normalized and split)
-    # We sort by length descending so "that makes sense" matches before "that"
+    # Prepare Ignore Phrases (also normalized and split)
     normalized_phrases = []
     for phrase in ignore_list:
         phrase_clean = phrase.lower().translate(translator)
@@ -36,25 +33,18 @@ def is_backchannel(transcript: str, ignore_list: list[str]) -> bool:
     
     normalized_phrases.sort(key=len, reverse=True)
 
-    # 3. Consumption Loop
-    # We keep eating valid phrases from the front of the 'words' list
+    # Consumption Loop
     while words:
         matched = False
         for phrase_tokens in normalized_phrases:
-            # Check if the remaining words start with this phrase
-            # e.g. words=['i', 'see', 'now'], phrase=['i', 'see'] -> Match!
             phrase_len = len(phrase_tokens)
             
             if words[:phrase_len] == phrase_tokens:
-                # Remove the matched phrase from the start
                 words = words[phrase_len:]
                 matched = True
-                break # Restart loop to match next chunk
+                break
         
         if not matched:
-            # We hit a word that IS NOT in the ignore list (e.g. "wait")
-            # This implies "Mixed Input" -> Real Interruption
             return False
 
-    # 4. Success: We consumed everything
     return True

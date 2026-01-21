@@ -81,9 +81,6 @@ To change this per agent, you can pass an `ignore_words` list when initializing 
 | 3. Correction | "No stop"       | Speaking    | INTERRUPTS  | "No" and "stop" not in ignore list.            |
 | 4. Mixed Input | "Yeah wait"     | Speaking    | INTERRUPTS  | "Yeah" consumed, "wait" remains.               |
 
-The requirement for Python 3.9+ is standard for LiveKit agents, as modern asynchronous features used in the library rely on newer Python versions. Since your logs show you are using Python 3.11, listing "3.9+" is safe and accurate.
-
-Here is the refined **Installation & Running** section. It explicitly warns users to install your local library instead of the public one.
 
 -------
 
