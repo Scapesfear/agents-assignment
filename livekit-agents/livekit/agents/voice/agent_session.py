@@ -132,19 +132,12 @@ class VoiceActivityVideoSampler:
 
 DEFAULT_TTS_TEXT_TRANSFORMS: list[TextTransforms] = ["filter_markdown", "filter_emoji"]
 DEFAULT_IGNORE_WORDS: list[str] = [
-    # Core Affirmations
-    "yes","yeah", "ok", "okay", "hmm", "mhmm", "aha", "uh-huh", "yep", "yup", "sure", "cool",
-    # Phrases (Scenario 1 & 2 coverage)
+    "yes","yeah", "ok", "okay", "hmm", "mhmm", "aha", "uh-huh", "yep", "yup", "sure", "cool","right","alright","oh","ohh",
     "i see",
-    "oh i see",
     "all right",
-    "that's right",
-    "makes sense",
-    "that makes sense",
     "go on",
     "keep going",
     "got it",
-    "fair enough"
 ]
 
 class AgentSession(rtc.EventEmitter[EventTypes], Generic[Userdata_T]):

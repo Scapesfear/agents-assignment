@@ -59,12 +59,13 @@ The list of ignored words and phrases is configurable in `livekit/agents/voice/a
 
 **Default Ignore List:**
 ```python
-DEFAULT_IGNORE_WORDS = [
-    # Single words
-    "yes", "yeah", "ok", "okay", "hmm", "mhmm", "aha", "uh-huh", "yep", "yup", "sure", "cool",
-    # Phrases (N-grams)
-    "i see", "oh i see", "all right", "that's right", "makes sense", "that makes sense",
-    "go on", "keep going", "got it", "fair enough"
+DEFAULT_IGNORE_WORDS: list[str] = [
+    "yes","yeah", "ok", "okay", "hmm", "mhmm", "aha", "uh-huh", "yep", "yup", "sure", "cool","right","alright","oh","ohh",
+    "i see",
+    "all right",
+    "go on",
+    "keep going",
+    "got it",
 ]
 ```
 
@@ -153,6 +154,75 @@ python examples/voice_agents/basic_agent.py console
 ```
 
 ---
+
+
+## Verification & Testing
+
+To ensure the solution strictly adheres to the challenge requirements, a comprehensive test suite was implemented.
+
+### 1. Install Test Dependencies
+Ensure you have `pytest` and `pytest-asyncio` installed:
+```bash
+pip install pytest pytest-asyncio
+
+```
+
+### 2. Run the Test Suite
+
+Run the tests with verbose output to see each scenario pass:
+
+```bash
+pytest -v tests/test_interruption_logic.py
+
+```
+
+### 3. What is Tested?
+
+The test file (`tests/test_interruption_logic.py`) explicitly validates the **4 Core Challenge Scenarios**:
+
+* **Scenario 1 (Long Explanation):**
+* *Context:* Agent is speaking. User says: "Okay... yeah... uh-huh"
+* *Result:* **IGNORED** (Agent continues speaking).
+
+
+* **Scenario 2 (Passive Affirmation):**
+* *Context:* Agent is silent. User says: "Yeah."
+* *Result:* **RESPOND** (Agent treats it as a valid turn).
+
+
+* **Scenario 3 (Correction):**
+* *Context:* Agent is speaking. User says: "No stop."
+* *Result:* **INTERRUPT** (Command detected).
+
+
+* **Scenario 4 (Mixed Input):**
+* *Context:* Agent is speaking. User says: "Yeah okay but wait."
+* *Result:* **INTERRUPT** (Command found after backchannel).
+
+
+
+### 4. Sample Output
+
+You should see all tests passing:
+
+```text
+tests/test_interruption_logic.py::test_nlp_basic_backchannel PASSED          [ 10%]
+tests/test_interruption_logic.py::test_nlp_phrase_backchannel PASSED         [ 20%]
+tests/test_interruption_logic.py::test_nlp_normalization PASSED              [ 30%]
+tests/test_interruption_logic.py::test_nlp_variants PASSED                   [ 40%]
+tests/test_interruption_logic.py::test_nlp_empty_input PASSED                [ 50%]
+tests/test_interruption_logic.py::test_scenario_1_long_explanation PASSED    [ 60%]
+tests/test_interruption_logic.py::test_scenario_3_immediate_stop PASSED      [ 70%]
+tests/test_interruption_logic.py::test_scenario_4_mixed_input PASSED         [ 80%]
+tests/test_interruption_logic.py::test_interruption_blocked_when_speaking PASSED [ 90%]
+tests/test_interruption_logic.py::test_scenario_2_response_when_silent PASSED [100%]
+
+============================== 10 passed in 0.12s ===============================
+
+```
+
+----
+
 
 ## 🔧 Modifications Summary
 
